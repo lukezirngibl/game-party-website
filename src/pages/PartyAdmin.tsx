@@ -336,7 +336,7 @@ export const PartyAdmin = () => {
                   <Input
                     placeholder="Min Score (optional)"
                     value={config.minScore}
-                    onChange={(maxScore) => setConfig((c) => ({ ...c, maxScore }))}
+                    onChange={(minScore) => setConfig((c) => ({ ...c, minScore }))}
                   />
                   <Input
                     placeholder="Max Score (optional)"
