@@ -17,7 +17,7 @@ import { Leaderboard } from './pages/Leaderboard'
 
 const queryClient = new QueryClient()
 
-OpenAPI.BASE = 'http://192.168.1.55:3001/api'
+OpenAPI.BASE = process.env.REACT_APP_API_URL || 'empty'
 
 const getHeaders = async () => {
   const gameId = localStorage.getItem('x-game-id')

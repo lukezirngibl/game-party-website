@@ -48,7 +48,7 @@ export const GameModule = (props: { game: Game }) => {
   const queryClient = useQueryClient()
   const adminCode = localStorage.getItem('x-party-admin-key')
 
-  const link = `http://192.168.1.55:3000/proxy/game?gameId=${game._id}`
+  const link = `${process.env.REACT_APP_API_URL}/proxy/game?gameId=${game._id}`
 
   return (
     <GameItem>
@@ -154,7 +154,7 @@ export const PartyAdmin = () => {
     return null
   }
 
-  const joinLink = `http://192.168.1.55:3000/join?code=${party.party.joinCode}`
+  const joinLink = `${process.env.REACT_APP_API_URL}/join?code=${party.party.joinCode}`
 
   return (
     <Scaffold backgroundImage="/background-3.png" hideLogo>
