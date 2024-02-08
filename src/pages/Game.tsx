@@ -62,7 +62,9 @@ export const Game = () => {
 
         {[GameType.HIGH_SCORE, GameType.LOW_SCORE, GameType.EXACT_NUMBER].includes(
           data.game.config.type as any,
-        ) && <Input value={value} onChange={setValue} placeholder="Enter..." type="number" />}
+        ) && (
+          <Input value={value} onChange={setValue} placeholder="Enter..." type="number" pattern="\d*" />
+        )}
 
         <Button
           label={data.results.length > 0 ? 'Complete' : 'Submit'}

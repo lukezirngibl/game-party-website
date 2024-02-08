@@ -82,6 +82,7 @@ export const Input = (props: {
   value: string
   type?: string
   onChange: (v: string) => void
+  pattern?: string
   placeholder?: string
   style?: CSSProperties
 }) => {
@@ -90,7 +91,7 @@ export const Input = (props: {
       placeholder={props.placeholder}
       type={props.type}
       style={props.style}
-      pattern="\d*"
+      pattern={props.pattern}
       value={props.value}
       onChange={(e) => {
         props.onChange(e.target.value)
