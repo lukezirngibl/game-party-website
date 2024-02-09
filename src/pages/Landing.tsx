@@ -22,6 +22,9 @@ export const Landing = () => {
           style={{
             background: COLORS.Blue,
           }}
+          onClick={() => {
+            navigate('/join-with-code')
+          }}
         />
         <Button
           label="Create a party"

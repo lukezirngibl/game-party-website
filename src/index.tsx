@@ -16,6 +16,7 @@ import { Game } from './pages/Game'
 import { Leaderboard } from './pages/Leaderboard'
 import { PartyAdminLogin } from './pages/PartyAdminLogin'
 import { NotFound } from './pages/404'
+import { JoinWithCode } from './pages/JoinWithCode'
 
 const queryClient = new QueryClient()
 
@@ -75,7 +76,10 @@ const router = createBrowserRouter([
     path: '/leaderboard',
     element: <Leaderboard />,
   },
-
+  {
+    path: '/join-with-code',
+    element: <JoinWithCode />,
+  },
   {
     path: '/join',
     element: <JoinTeam />,
