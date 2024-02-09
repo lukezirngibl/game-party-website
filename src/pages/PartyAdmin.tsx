@@ -19,6 +19,7 @@ import { toast } from 'react-toastify'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import { MdRemoveRedEye } from 'react-icons/md'
 import QRCode from 'react-qr-code'
+import { FiLogOut } from 'react-icons/fi'
 
 const options = [
   { label: 'Exact Number', value: GameType_ExactNumber.EXACT_NUMBER },
@@ -134,6 +135,7 @@ export const PartyAdmin = () => {
   const [tab, setTab] = useState('Games')
 
   const [joinPartyModalOpen, setJoinPartyModalOpen] = useState(false)
+  const [partyAdminModalOpen, setPartyAdminModalOpen] = useState(false)
 
   const { data: party } = useQuery({
     queryKey: ['admin', adminCode],
@@ -142,6 +144,10 @@ export const PartyAdmin = () => {
     },
     refetchInterval: 1000 * 5,
     enabled: !!adminCode,
+    retry: false,
+    onError: () => {
+      navigate('/404')
+    },
   })
 
   useEffect(() => {
@@ -156,8 +162,34 @@ export const PartyAdmin = () => {
 
   const joinLink = `${process.env.REACT_APP_CLIENT_URL}/join?code=${party.party.joinCode}`
 
+  const adminLink = `${process.env.REACT_APP_CLIENT_URL}/proxy/admin?code=${party.party.adminCode}`
+
   return (
     <Scaffold backgroundImage="/background-3.png" hideLogo>
+      <Modal
+        open={partyAdminModalOpen}
+        onClose={() => {
+          setPartyAdminModalOpen(false)
+        }}
+        style={{
+          width: 500,
+        }}
+      >
+        <>
+          <p>1. QR Code</p>
+          <QRCode size={256} value={joinLink} />
+          <p>2. Link</p>
+          <div
+            style={{
+              background: 'rgba(0,0,0,0.06)',
+              padding: '16px 24px',
+              borderRadius: 8,
+            }}
+          >
+            <p>{adminLink}</p>
+          </div>
+        </>
+      </Modal>
       <Modal
         open={joinPartyModalOpen}
         onClose={() => {
@@ -201,7 +233,11 @@ export const PartyAdmin = () => {
           >
             {party.party.name}
           </h1>
-          <QrItem>
+          <QrItem
+            onClick={() => {
+              setPartyAdminModalOpen(true)
+            }}
+          >
             <QrButton>
               <IoQrCode size={20} />
             </QrButton>
@@ -394,9 +430,39 @@ export const PartyAdmin = () => {
           </GameWrapper>
         )}
       </PartyWrapper>
+      <LogoutButton
+        onClick={() => {
+          localStorage.removeItem('x-party-admin-key')
+          navigate('/')
+        }}
+      >
+        <FiLogOut size={28} />
+      </LogoutButton>
     </Scaffold>
   )
 }
+
+const LogoutButton = styled.button`
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 0 8px 8px rgba(0, 0, 0, 0.05);
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 16px;
+  border: 0;
+  right: 16px;
+  z-index: 1;
+  cursor: pointer;
+  transition: all ease 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`
 
 const TeamRow = styled.div`
   font-size: 20px;

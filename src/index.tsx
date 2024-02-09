@@ -11,9 +11,11 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { JoinTeam } from './pages/JoinTeam'
 import { Party } from './pages/Party'
-import { GameProxy } from './proxies'
+import { GameProxy, PartyAdminProxy } from './proxies'
 import { Game } from './pages/Game'
 import { Leaderboard } from './pages/Leaderboard'
+import { PartyAdminLogin } from './pages/PartyAdminLogin'
+import { NotFound } from './pages/404'
 
 const queryClient = new QueryClient()
 
@@ -38,8 +40,20 @@ const getHeaders = async () => {
 OpenAPI.HEADERS = getHeaders
 const router = createBrowserRouter([
   {
-    path: '/create-party',
+    path: '/404',
+    element: <NotFound />,
+  },
+  {
+    path: '/party/create',
     element: <CreateParty />,
+  },
+  {
+    path: '/party/admin',
+    element: <PartyAdmin />,
+  },
+  {
+    path: '/party/login',
+    element: <PartyAdminLogin />,
   },
   {
     path: '/party',
@@ -50,6 +64,10 @@ const router = createBrowserRouter([
     element: <GameProxy />,
   },
   {
+    path: '/proxy/admin',
+    element: <PartyAdminProxy />,
+  },
+  {
     path: '/game',
     element: <Game />,
   },
@@ -57,10 +75,7 @@ const router = createBrowserRouter([
     path: '/leaderboard',
     element: <Leaderboard />,
   },
-  {
-    path: '/party/admin',
-    element: <PartyAdmin />,
-  },
+
   {
     path: '/join',
     element: <JoinTeam />,

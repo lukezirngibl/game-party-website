@@ -9,6 +9,15 @@ export const Landing = () => {
     <Scaffold backgroundImage="/background.png">
       <Wrapper>
         <Button
+          label="Party admin"
+          style={{
+            background: COLORS.Blue,
+          }}
+          onClick={() => {
+            navigate('/party/login')
+          }}
+        />
+        <Button
           label="Join a party"
           style={{
             background: COLORS.Blue,
@@ -17,7 +26,7 @@ export const Landing = () => {
         <Button
           label="Create a party"
           onClick={() => {
-            navigate('/create-party')
+            navigate('/party/create')
           }}
         />
       </Wrapper>

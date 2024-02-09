@@ -18,3 +18,20 @@ export const GameProxy = () => {
 
   return null
 }
+
+export const PartyAdminProxy = () => {
+  const navigate = useNavigate()
+
+  const code = queryString.parse(window.location.search)?.code
+
+  useEffect(() => {
+    if (!code) {
+      navigate('/404')
+    } else {
+      localStorage.setItem('x-party-admin-key', code as string)
+      navigate('/party/admin')
+    }
+  }, [code])
+
+  return null
+}
