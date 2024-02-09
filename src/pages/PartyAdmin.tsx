@@ -367,7 +367,9 @@ export const PartyAdmin = () => {
                 />
               )}
 
-              {[GameType.HIGH_SCORE, GameType.LOW_SCORE].includes(config.type as any) && (
+              {[GameType.HIGH_SCORE, GameType.LOW_SCORE, GameType.EXACT_NUMBER].includes(
+                config.type as any,
+              ) && (
                 <>
                   <Input
                     placeholder="Min Score (optional)"
