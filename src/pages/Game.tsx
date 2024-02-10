@@ -258,9 +258,13 @@ export const Game = () => {
               Max attempts: {data.game.config.maxTries || 1}
             </p>
           </div>
-
-          <p>{data.results.length > 0 ? data.results[0].value : ''}</p>
         </div>
+        {data.results.length > 0 && (
+          <p>
+            Last submission:{' '}
+            {data.results[0].value || `${((data.results[0].time || 0) / 1000).toFixed(2)}s`}
+          </p>
+        )}
       </CenterBox>
     </Scaffold>
   )
