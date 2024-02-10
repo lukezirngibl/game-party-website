@@ -141,7 +141,7 @@ export const Leaderboard = () => {
             </GameItem>
           ))}
         </GamesHeader>
-        {sortedTeams.map(({ team, total }) => {
+        {sortedTeams.map(({ team, total }, index) => {
           return (
             <TeamRow
               key={team._id}
@@ -159,7 +159,9 @@ export const Leaderboard = () => {
                   background: COLORS.Purple,
                 }}
               >
-                <h2>{team.name}</h2>
+                <h2>
+                  {index}. {team.name}
+                </h2>
                 <h4
                   style={{
                     color: 'white',
