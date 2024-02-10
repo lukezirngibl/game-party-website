@@ -31,10 +31,6 @@ export const Party = () => {
     return null
   }
 
-  if (cameraEnabled) {
-    return <Camera onTakePhoto={() => {}} />
-  }
-
   return (
     <Scaffold backgroundImage="/background-4.png" hideLogo>
       <CenterBox
@@ -99,7 +95,7 @@ export const Party = () => {
             color: 'rgba(0,0,0,0.7)',
           }}
         /> */}
-        <Button
+        {/* <Button
           label="Close Window"
           onClick={() => {
             setCameraEnabled(true)
@@ -109,7 +105,7 @@ export const Party = () => {
             fontSize: 18,
             marginTop: 'auto',
           }}
-        />
+        /> */}
         <Button
           label="Leave party"
           onClick={() => {
