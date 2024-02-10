@@ -260,7 +260,7 @@ export const Leaderboard = () => {
                       <h2
                         style={{
                           fontSize: 24,
-                          fontFamily: 'Menlo',
+
                           opacity: val === null ? 0.3 : 1,
                         }}
                       >
