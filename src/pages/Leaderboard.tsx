@@ -157,7 +157,7 @@ export const Leaderboard = () => {
                     fontWeight: 'normal',
                     opacity: 0.7,
                     marginTop: 4,
-                    fontSize: 14,
+                    fontSize: 16,
                   }}
                 >
                   {party.players
