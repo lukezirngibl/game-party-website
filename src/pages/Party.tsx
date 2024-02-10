@@ -118,6 +118,7 @@ export const Party = () => {
             textDecoration: 'underline',
             fontSize: 18,
             color: 'rgba(0,0,0,0.7)',
+            marginTop: 'auto',
           }}
         />
       </CenterBox>
