@@ -274,7 +274,7 @@ export const Game = () => {
 
             {![GameType.TIMED].includes(data.game.config.type as any) && (
               <Button
-                label={data.results.length > 0 ? 'Completed' : 'Submit'}
+                label={'Submit'}
                 style={{
                   marginTop: 8,
                   width: '100%',
