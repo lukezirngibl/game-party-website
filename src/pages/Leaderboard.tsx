@@ -144,7 +144,7 @@ export const Leaderboard = () => {
             >
               <GameItem
                 style={{
-                  flex: `0 0 ${columnWidth * 3}px`,
+                  flex: `0 0 ${columnWidth * 2}px`,
                   flexDirection: 'column',
                   alignItems: 'flex-start',
                   justifyContent: 'center',
