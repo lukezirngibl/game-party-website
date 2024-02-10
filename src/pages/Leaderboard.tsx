@@ -232,7 +232,14 @@ export const Leaderboard = () => {
                       style={{
                         flex: '0 0 80px',
                         height: '100%',
-                        background: points === '100' ? '#02bf2b' : 'rgba(0,0,0,0.1)',
+                        background:
+                          [
+                            GameType_HighScore.HIGH_SCORE,
+                            GameType_LowScore.LOW_SCORE,
+                            GameType_ExactNumber.EXACT_NUMBER,
+                          ].includes(g.config.type as any) && points === '100'
+                            ? '#02bf2b'
+                            : 'rgba(0,0,0,0.1)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',

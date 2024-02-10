@@ -45,7 +45,7 @@ export const Game = () => {
     queryKey: ['game', gameId],
     retry: 0,
     queryFn: () => {
-      return V1Service.getGame()
+      return V1Service.getGame().then((g) => ({ ...g, results: g.results.reverse() }))
     },
     onError: () => {
       navigate('/404')
@@ -115,7 +115,7 @@ export const Game = () => {
           }}
         >
           <h1>{data.game.title}</h1>
-          <p style={{}}>{data.game.description}</p>
+          {/* <p style={{}}>{data.game.description}</p> */}
 
           <h3
             style={{
@@ -174,8 +174,7 @@ export const Game = () => {
           gap: 8,
         }}
       >
-        <h1>{data.game.title}</h1>
-        <p style={{ marginBottom: 'auto' }}>{data.game.description}</p>
+        <h1 style={{ marginBottom: 'auto' }}>{data.game.title}</h1>
 
         {resultsLocked && (
           <p style={{ color: 'red', fontSize: 12, marginTop: 8 }}>
@@ -195,7 +194,7 @@ export const Game = () => {
                   style={{
                     width: '100%',
                     textAlign: 'center',
-                    fontSize: 56,
+                    fontSize: 48,
                     opacity: time === '00:00:00' ? 0.2 : 1,
                     marginBottom: 16,
                     fontFamily: 'Menlo',
@@ -274,7 +273,7 @@ export const Game = () => {
 
             {![GameType.TIMED].includes(data.game.config.type as any) && (
               <Button
-                label={'Submit'}
+                label={data.results.length > 0 ? 'Resubmit' : 'Submit'}
                 style={{
                   marginTop: 8,
                   width: '100%',
