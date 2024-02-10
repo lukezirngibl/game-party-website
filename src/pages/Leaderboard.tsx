@@ -100,7 +100,7 @@ export const Leaderboard = () => {
           <GameItem
             style={{
               flex: `0 0 ${columnWidth * 2}px`,
-              background: '#35e81a',
+              background: '#02bf2b',
             }}
           >
             <h1
@@ -217,12 +217,12 @@ export const Leaderboard = () => {
                     }}
                     key={g._id}
                   >
-                    <div style={{ flex: 1 }}>
+                    <div style={{ flex: 1, overflow: 'hidden' }}>
                       <h2
                         style={{
                           marginRight: 16,
                           fontSize: 24,
-                          opacity: val === null ? 0.3 : 1,
+                          opacity: ['Hidden', 'Correct', 'Incorrect'].includes(`${value}`) ? 0.4 : 1,
                         }}
                       >
                         {value}
@@ -232,7 +232,7 @@ export const Leaderboard = () => {
                       style={{
                         flex: '0 0 80px',
                         height: '100%',
-                        background: 'rgba(0,0,0,0.1)',
+                        background: points === '100' ? '#02bf2b' : 'rgba(0,0,0,0.1)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
