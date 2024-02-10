@@ -230,20 +230,22 @@ export const Game = () => {
                   <Button
                     label={'Submit'}
                     onClick={() => {
-                      V1Service.submitResult({ value, time: count })
-                        .then((results) => {
-                          toast.success('Result submitted')
-                          queryClient.setQueryData(['game', gameId], (p: any) => {
-                            return {
-                              ...p,
-                              results,
-                            }
+                      new Promise((resolve) => setTimeout(resolve, 1500)).then(() => {
+                        V1Service.submitResult({ value, time: count })
+                          .then((results) => {
+                            toast.success('Result submitted')
+                            queryClient.setQueryData(['game', gameId], (p: any) => {
+                              return {
+                                ...p,
+                                results,
+                              }
+                            })
                           })
-                        })
 
-                        .catch((e) => {
-                          toast.error(e.message)
-                        })
+                          .catch((e) => {
+                            toast.error(e.message)
+                          })
+                      })
 
                       setTime('00:00:00')
                       setCount(0)
@@ -273,7 +275,7 @@ export const Game = () => {
 
             {![GameType.TIMED].includes(data.game.config.type as any) && (
               <Button
-                label={data.results.length > 0 ? 'Resubmit' : 'Submit'}
+                label={loading ? 'Submitting...' : data.results.length > 0 ? 'Resubmit' : 'Submit'}
                 style={{
                   marginTop: 8,
                   width: '100%',
@@ -281,20 +283,22 @@ export const Game = () => {
                 disabled={loading || resultsLocked}
                 onClick={() => {
                   setLoading(true)
-                  V1Service.submitResult({ value, time: null })
-                    .then((results) => {
-                      setLoading(false)
-                      queryClient.setQueryData(['game', gameId], (p: any) => {
-                        return {
-                          ...p,
-                          results,
-                        }
+                  new Promise((resolve) => setTimeout(resolve, 1500)).then(() => {
+                    V1Service.submitResult({ value, time: null })
+                      .then((results) => {
+                        setLoading(false)
+                        queryClient.setQueryData(['game', gameId], (p: any) => {
+                          return {
+                            ...p,
+                            results,
+                          }
+                        })
                       })
-                    })
-                    .catch((e) => {
-                      setLoading(false)
-                      toast.error(e.message)
-                    })
+                      .catch((e) => {
+                        setLoading(false)
+                        toast.error(e.message)
+                      })
+                  })
                 }}
               />
             )}
