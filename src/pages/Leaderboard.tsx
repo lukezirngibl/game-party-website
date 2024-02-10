@@ -41,13 +41,13 @@ export const Leaderboard = () => {
     },
   })
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      window.location.reload()
-    }, 1000 * 60)
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     window.location.reload()
+  //   }, 1000 * 60)
 
-    return () => clearInterval(interval)
-  }, [])
+  //   return () => clearInterval(interval)
+  // }, [])
 
   const teamTotals = useMemo(
     () =>
