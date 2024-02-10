@@ -102,6 +102,67 @@ export const Game = () => {
     data.game.config.maxTries !== null &&
     data.results.length >= data.game.config.maxTries
 
+  if (resultsLocked) {
+    return (
+      <Scaffold backgroundImage="/background-4.png" hideLogo>
+        <CenterBox
+          style={{
+            width: '100%',
+            maxWidth: 400,
+            height: 500,
+            alignItems: 'flex-start',
+            gap: 8,
+          }}
+        >
+          <h1>{data.game.title}</h1>
+          <p style={{}}>{data.game.description}</p>
+
+          <h3
+            style={{
+              marginTop: 'auto',
+              marginBottom: 'auto',
+              fontSize: 32,
+              fontWeight: 'bold',
+              width: '100%',
+              textAlign: 'center',
+            }}
+          >
+            Max tries reached.
+          </h3>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              gap: 8,
+              width: '100%',
+              marginTop: 12,
+              borderTop: '1px solid rgba(0,0,0, 0.1)',
+              paddingTop: 16,
+            }}
+          >
+            <div style={{}}>
+              <p style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>Team: {player.team.name}</p>
+              <p style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>Player: {player.me.name}</p>
+            </div>
+            <div style={{}}>
+              <p style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>Attempts: {data.results.length}</p>
+              <p style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>
+                Max attempts: {data.game.config.maxTries || 1}
+              </p>
+            </div>
+          </div>
+          {data.results.length > 0 && (
+            <p style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>
+              Last submission:{' '}
+              {data.results[0].value || `${((data.results[0].time || 0) / 1000).toFixed(2)}s`}
+            </p>
+          )}
+        </CenterBox>
+      </Scaffold>
+    )
+  }
+
   return (
     <Scaffold backgroundImage="/background-4.png" hideLogo>
       <CenterBox
