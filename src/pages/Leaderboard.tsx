@@ -148,7 +148,7 @@ export const Leaderboard = () => {
                   flexDirection: 'column',
                   alignItems: 'flex-start',
                   justifyContent: 'center',
-                  background: COLORS.Orange,
+                  background: COLORS.Purple,
                 }}
               >
                 <h2>{team.name}</h2>
