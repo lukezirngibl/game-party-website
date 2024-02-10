@@ -1,129 +1,17 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import {
-  Game,
-  GameType,
-  GameType_ExactNumber,
-  GameType_ExactOption,
-  GameType_Free,
-  GameType_HighScore,
-  GameType_LowScore,
-  V1Service,
-} from '../openapi'
-import styled from 'styled-components'
-import { COLORS } from '../constants'
-import { Button, Input, Modal, Scaffold, Select, TextArea } from '../components'
-import { IoQrCode } from 'react-icons/io5'
-import { toast } from 'react-toastify'
 import { FaRegTrashAlt } from 'react-icons/fa'
-import { MdRemoveRedEye } from 'react-icons/md'
-import QRCode from 'react-qr-code'
 import { FiLogOut } from 'react-icons/fi'
-
-const options = [
-  { label: 'Exact Number', value: GameType_ExactNumber.EXACT_NUMBER },
-  { label: 'Exact Option', value: GameType_ExactOption.EXACT_OPTION },
-  { label: 'Free', value: GameType_Free.FREE },
-  { label: 'High Score', value: GameType_HighScore.HIGH_SCORE },
-  { label: 'Low Score', value: GameType_LowScore.LOW_SCORE },
-]
-
-const initialState = {
-  title: '',
-  description: '',
-  options: '',
-  target: '',
-  maxTries: '',
-  maxScore: '',
-  minScore: '',
-  points: '',
-  type: String(GameType.HIGH_SCORE),
-}
-
-export const GameModule = (props: { game: Game }) => {
-  const { game } = props
-
-  const [open, setOpen] = useState(false)
-
-  const queryClient = useQueryClient()
-  const adminCode = localStorage.getItem('x-party-admin-key')
-
-  const link = `${process.env.REACT_APP_CLIENT_URL}/proxy/game?gameId=${game._id}`
-
-  return (
-    <GameItem>
-      <Modal
-        open={open}
-        onClose={() => {
-          setOpen(false)
-        }}
-        style={{
-          width: 500,
-        }}
-      >
-        <>
-          <p>1. QR Code</p>
-          <QRCode size={256} value={link} />
-          <p>2. Link</p>
-          <div
-            style={{
-              background: 'rgba(0,0,0,0.06)',
-              padding: '16px 24px',
-              borderRadius: 8,
-            }}
-          >
-            <p>{link}</p>
-          </div>
-        </>
-      </Modal>
-
-      <h3>{game.title}</h3>
-      <GameFooter>
-        <QrButton
-          style={{
-            boxShadow: '0 1px 2px 2px rgba(0, 0, 0, 0.1)',
-          }}
-        >
-          <MdRemoveRedEye />
-        </QrButton>
-
-        <QrButton
-          style={{
-            boxShadow: '0 1px 2px 2px rgba(0, 0, 0, 0.1)',
-          }}
-          onClick={() => {
-            setOpen(true)
-          }}
-        >
-          <IoQrCode size={20} />
-        </QrButton>
-        <QrButton
-          style={{
-            marginLeft: 'auto',
-            boxShadow: '0 1px 2px 2px rgba(0, 0, 0, 0.1)',
-          }}
-          onClick={() => {
-            V1Service.archiveGame(game._id)
-              .then(() => {
-                queryClient.setQueryData(['admin', adminCode], (p: any) => {
-                  return {
-                    ...p,
-                    games: p.games.filter((i: any) => i._id !== game._id),
-                  }
-                })
-              })
-              .catch((e) => {
-                toast.error(e.message)
-              })
-          }}
-        >
-          <FaRegTrashAlt />
-        </QrButton>
-      </GameFooter>
-    </GameItem>
-  )
-}
+import { IoQrCode } from 'react-icons/io5'
+import QRCode from 'react-qr-code'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import styled from 'styled-components'
+import { Button, Modal, Scaffold } from '../components'
+import { GameItem } from '../components/GameItem'
+import { NewGameForm } from '../components/NewGameForm'
+import { COLORS } from '../constants'
+import { V1Service } from '../openapi'
 
 export const PartyAdmin = () => {
   const navigate = useNavigate()
@@ -131,7 +19,6 @@ export const PartyAdmin = () => {
 
   const adminCode = localStorage.getItem('x-party-admin-key')
 
-  const [config, setConfig] = useState(initialState)
   const [tab, setTab] = useState('Games')
 
   const [joinPartyModalOpen, setJoinPartyModalOpen] = useState(false)
@@ -332,100 +219,11 @@ export const PartyAdmin = () => {
 
         {tab === 'Games' && (
           <GameWrapper>
-            <NewGame>
-              <h3 style={{ textAlign: 'left', width: '100%', fontSize: 24, marginBottom: 12 }}>
-                Add Game
-              </h3>
-              <Input
-                placeholder="Title"
-                value={config.title}
-                onChange={(title) => setConfig((c) => ({ ...c, title }))}
-              />
-              <TextArea
-                placeholder="Description"
-                aria-multiline
-                value={config.description}
-                onChange={(description) => setConfig((c) => ({ ...c, description }))}
-              />
-              <Select
-                options={options}
-                value={config.type}
-                onChange={(type) => setConfig((c) => ({ ...c, type }))}
-              />
-              {[GameType.EXACT_OPTION].includes(config.type as any) && (
-                <Input
-                  placeholder="Options (comma separated)"
-                  value={config.options}
-                  onChange={(options) => setConfig((c) => ({ ...c, options }))}
-                />
-              )}
-              {[GameType.EXACT_OPTION, GameType.EXACT_NUMBER].includes(config.type as any) && (
-                <Input
-                  placeholder="Target value"
-                  value={config.target}
-                  onChange={(target) => setConfig((c) => ({ ...c, target }))}
-                />
-              )}
-
-              {[GameType.HIGH_SCORE, GameType.LOW_SCORE, GameType.EXACT_NUMBER].includes(
-                config.type as any,
-              ) && (
-                <>
-                  <Input
-                    placeholder="Min Score (optional)"
-                    value={config.minScore}
-                    onChange={(minScore) => setConfig((c) => ({ ...c, minScore }))}
-                  />
-                  <Input
-                    placeholder="Max Score (optional)"
-                    value={config.maxScore}
-                    onChange={(maxScore) => setConfig((c) => ({ ...c, maxScore }))}
-                  />
-                </>
-              )}
-
-              <Input
-                placeholder="Max tries (empty = infinity)"
-                value={config.maxTries}
-                onChange={(maxTries) => setConfig((c) => ({ ...c, maxTries }))}
-              />
-              <Input
-                placeholder="Points (e.g 100)"
-                value={config.points}
-                onChange={(points) => setConfig((c) => ({ ...c, points }))}
-              />
-              <Button
-                label="Add"
-                disabled={!config.title || !config.description}
-                style={{ width: '100%', marginTop: 'auto' }}
-                onClick={() => {
-                  V1Service.createGame({
-                    title: config.title,
-                    description: config.description,
-                    config: {
-                      ...config,
-                      type: config.type as GameType,
-                    },
-                  })
-                    .then(({ game }) => {
-                      setConfig(initialState)
-                      queryClient.setQueryData(['admin', adminCode], (p: any) => {
-                        return {
-                          ...p,
-                          games: [...p.games, game],
-                        }
-                      })
-                    })
-                    .catch((e) => {
-                      toast.error(e.message)
-                    })
-                }}
-              />
-            </NewGame>
+            <NewGameForm />
             <Games>
               <GamesInnerWrapper>
                 {party.games.map((g) => (
-                  <GameModule game={g} key={g._id} />
+                  <GameItem game={g} key={g._id} />
                 ))}
               </GamesInnerWrapper>
             </Games>
@@ -568,27 +366,6 @@ const Games = styled.div`
   overflow-y: auto;
 `
 
-const GameItem = styled.div`
-  padding: 16px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 0 8px 8px rgba(0, 0, 0, 0.05);
-  width: 256px;
-  height: 144px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  h3 {
-    font-size: 24px;
-  }
-
-  p {
-    font-size: 16px;
-    opacity: 0.6;
-  }
-`
-
 const QrItem = styled.div`
   display: flex;
   flex-direction: column;
@@ -617,19 +394,6 @@ const QrButton = styled.div`
   &:hover {
     transform: scale(1.05);
   }
-`
-
-const NewGame = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
-  padding: 24px;
-  width: 360px;
-  height: 700px;
-  box-shadow: 0 0 8px 8px rgba(0, 0, 0, 0.05);
-  background: white;
-  border-radius: 12px;
 `
 
 const PartyWrapper = styled.div`

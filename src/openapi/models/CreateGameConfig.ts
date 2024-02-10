@@ -4,8 +4,11 @@
 /* eslint-disable */
 import type { GameType } from './GameType';
 export type CreateGameConfig = {
+    hidden: boolean;
     type: GameType;
     points: string;
+    maxTime: string;
+    minTime: string;
     minScore: string;
     maxScore: string;
     maxTries: string;

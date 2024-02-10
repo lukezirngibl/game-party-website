@@ -8,4 +8,7 @@ export enum GameType {
     EXACT_NUMBER = 'ExactNumber',
     EXACT_OPTION = 'ExactOption',
     FREE = 'Free',
+    TIMED = 'Timed',
+    TIMED_WITH_TARGET = 'TimedWithTarget',
+    TIMED_WITH_OPTION = 'TimedWithOption',
 }

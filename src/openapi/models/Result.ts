@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { ObjectId } from './ObjectId';
 export type Result = {
+    time: number | null;
     value: (string | number);
     playerId: ObjectId;
     teamId: ObjectId;

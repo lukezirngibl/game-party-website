@@ -9,6 +9,7 @@ import {
   GameType_Free,
   GameType_HighScore,
   GameType_LowScore,
+  GameType_Timed,
   V1Service,
 } from '../openapi'
 import { useMemo } from 'react'
@@ -165,6 +166,8 @@ export const Leaderboard = () => {
                     value = `Hidden`
                   } else if (g.config.type === GameType_Free.FREE) {
                     value = `Done`
+                  } else if (g.config.type === GameType_Timed.TIMED) {
+                    value = `${Math.abs(val.value / 1000).toFixed(2)}s`
                   } else if (g.config.type === GameType_ExactOption.EXACT_OPTION) {
                     if (value === 1) {
                       value = `Correct`

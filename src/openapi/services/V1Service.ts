@@ -132,16 +132,15 @@ export class V1Service {
     }
     /**
      * @param requestBody
-     * @returns any Ok
+     * @returns Result Ok
      * @throws ApiError
      */
     public static submitResult(
         requestBody: {
+            time: number | null;
             value: (string | number);
         },
-    ): CancelablePromise<{
-        results: Array<Result>;
-    }> {
+    ): CancelablePromise<Result> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/v1/submit-result',
@@ -222,7 +221,7 @@ export class V1Service {
     }> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/v1/{gameId}/create-game',
+            url: '/v1/create-game',
             body: requestBody,
             mediaType: 'application/json',
         });
