@@ -21,6 +21,8 @@ export const Game = () => {
 
   const queryClient = useQueryClient()
 
+  const [loading, setLoading] = useState(false)
+
   const [start, setStart] = useState(false)
   const [count, setCount] = useState(0)
   const [time, setTime] = useState('00:00:00')
@@ -211,15 +213,17 @@ export const Game = () => {
 
             {![GameType.TIMED].includes(data.game.config.type as any) && (
               <Button
-                label={data.results.length > 0 ? 'Complete' : 'Submit'}
+                label={data.results.length > 0 ? 'Completed' : 'Submit'}
                 style={{
                   marginTop: 8,
                   width: '100%',
                 }}
-                disabled={data.results.length > 0 || value === ''}
+                disabled={loading || resultsLocked}
                 onClick={() => {
+                  setLoading(true)
                   V1Service.submitResult({ value, time: null })
                     .then((results) => {
+                      setLoading(false)
                       queryClient.setQueryData(['game', gameId], (p: any) => {
                         return {
                           ...p,
@@ -228,6 +232,7 @@ export const Game = () => {
                       })
                     })
                     .catch((e) => {
+                      setLoading(false)
                       toast.error(e.message)
                     })
                 }}
@@ -260,7 +265,7 @@ export const Game = () => {
           </div>
         </div>
         {data.results.length > 0 && (
-          <p>
+          <p style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>
             Last submission:{' '}
             {data.results[0].value || `${((data.results[0].time || 0) / 1000).toFixed(2)}s`}
           </p>
