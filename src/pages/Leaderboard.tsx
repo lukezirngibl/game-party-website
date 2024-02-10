@@ -160,7 +160,7 @@ export const Leaderboard = () => {
                 }}
               >
                 <h2>
-                  {index}. {team.name}
+                  {index + 1}. {team.name}
                 </h2>
                 <h4
                   style={{
