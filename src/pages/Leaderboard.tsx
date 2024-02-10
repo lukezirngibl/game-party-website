@@ -255,6 +255,7 @@ export const Leaderboard = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        fontFamily: 'Menlo',
                       }}
                     >
                       <h2
