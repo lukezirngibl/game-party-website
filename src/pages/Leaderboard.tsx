@@ -113,6 +113,14 @@ export const Leaderboard = () => {
               {party.party.name}
             </h1>
           </GameItem>
+          <GameItem
+            style={{
+              ...columnStyle,
+              background: COLORS.Purple,
+            }}
+          >
+            <h2>Total points</h2>
+          </GameItem>
           {party.games.map((g) => (
             <GameItem
               style={{
@@ -124,14 +132,6 @@ export const Leaderboard = () => {
               <h2 style={{ textTransform: 'uppercase' }}>{g.title}</h2>
             </GameItem>
           ))}
-          <GameItem
-            style={{
-              ...columnStyle,
-              background: COLORS.Purple,
-            }}
-          >
-            <h2>Total points</h2>
-          </GameItem>
         </GamesHeader>
         {sortedTeams.map(({ team, total }) => {
           return (
@@ -148,6 +148,7 @@ export const Leaderboard = () => {
                   flexDirection: 'column',
                   alignItems: 'flex-start',
                   justifyContent: 'center',
+                  background: COLORS.Orange,
                 }}
               >
                 <h2>{team.name}</h2>
@@ -165,6 +166,14 @@ export const Leaderboard = () => {
                     .map((p) => p.name.slice(0, 16))
                     .join(',')}
                 </h4>
+              </GameItem>
+              <GameItem
+                style={{
+                  ...columnStyle,
+                  background: COLORS.Purple,
+                }}
+              >
+                <h2>{total.toFixed(0)}</h2>
               </GameItem>
               {party.games.map((g) => {
                 const val = stats?.[g._id]?.[team._id]
@@ -250,14 +259,6 @@ export const Leaderboard = () => {
                   </GameItem>
                 )
               })}
-              <GameItem
-                style={{
-                  ...columnStyle,
-                  background: COLORS.Purple,
-                }}
-              >
-                <h2>{total.toFixed(0)}</h2>
-              </GameItem>
             </TeamRow>
           )
         })}
