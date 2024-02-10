@@ -15,6 +15,7 @@ export const JoinTeam = () => {
   const [team, setTeam] = useState<string>('')
   const [name, setName] = useState<string>('')
   const [teamName, setTeamName] = useState<string>('')
+  const [loading, setLoading] = useState(false)
 
   const joinCode = parsed?.code as string
 
@@ -91,15 +92,22 @@ export const JoinTeam = () => {
             <Input style={{}} placeholder="My name" onChange={setName} value={name} />
             <Button
               label="Join"
-              disabled={!team || name.length < 3}
+              disabled={loading || !team || name.length < 3}
               style={{ marginTop: 16, width: '100%', background: COLORS.Blue }}
               onClick={() => {
-                V1Service.joinTeam({ name, teamId: team }).then(({ player }) => {
-                  localStorage.setItem('x-player-id', player._id)
-                  new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-                    navigate('/party')
+                setLoading(true)
+                V1Service.joinTeam({ name, teamId: team })
+                  .then(({ player }) => {
+                    setLoading(false)
+                    localStorage.setItem('x-player-id', player._id)
+                    new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+                      navigate('/party')
+                    })
                   })
-                })
+                  .catch((e) => {
+                    setLoading(false)
+                    alert(e.message)
+                  })
               }}
             />
           </>
@@ -118,15 +126,22 @@ export const JoinTeam = () => {
             <Input style={{}} placeholder="Team name" onChange={setTeamName} value={teamName} />
             <Button
               label="Create"
-              disabled={name.length < 3 || teamName.length < 3}
+              disabled={loading || name.length < 3 || teamName.length < 3}
               style={{ marginTop: 16, width: '100%', background: COLORS.Blue }}
               onClick={() => {
-                V1Service.createTeam({ name, teamName }).then(({ team, player }) => {
-                  localStorage.setItem('x-player-id', player._id)
-                  new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-                    navigate('/party')
+                setLoading(true)
+                V1Service.createTeam({ name, teamName })
+                  .then(({ team, player }) => {
+                    setLoading(false)
+                    localStorage.setItem('x-player-id', player._id)
+                    new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+                      navigate('/party')
+                    })
                   })
-                })
+                  .catch((e) => {
+                    setLoading(false)
+                    alert(e.message)
+                  })
               }}
             />
           </>
