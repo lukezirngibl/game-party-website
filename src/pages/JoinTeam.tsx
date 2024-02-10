@@ -53,7 +53,6 @@ export const JoinTeam = () => {
           width: '100%',
           height: 320,
           gap: 8,
-          marginTop: 144,
         }}
       >
         {tab === null && (

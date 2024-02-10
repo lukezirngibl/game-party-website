@@ -31,20 +31,19 @@ export const Party = () => {
           width: '100%',
           maxWidth: 400,
           height: 400,
-          marginTop: 144,
           gap: 8,
         }}
       >
         <h1>{data.team.name}</h1>
         <p>Hey {data.me.name}, you are all set!. Now go and scan the game QR codes!</p>
-        <Button
+        {/* <Button
           label="Scan QR code"
           style={{
             width: '100%',
             marginTop: 'auto',
           }}
-        />
-        <Button
+        /> */}
+        {/* <Button
           label="Leave team"
           onClick={() => {
             localStorage.clear()
@@ -55,14 +54,19 @@ export const Party = () => {
             background: 'rgba(0,0,0,0.1)',
             color: 'rgba(0,0,0,0.7)',
           }}
-        />
+        /> */}
         <Button
           label="Leave party"
           onClick={() => {
             localStorage.clear()
             navigate('/')
           }}
-          style={{ width: '100%', background: 'rgba(0,0,0,0.1)', color: 'rgba(0,0,0,0.7)' }}
+          style={{
+            width: '100%',
+            background: 'rgba(0,0,0,0.1)',
+            color: 'rgba(0,0,0,0.7)',
+            marginTop: 'auto',
+          }}
         />
       </CenterBox>
     </Scaffold>

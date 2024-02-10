@@ -13,6 +13,7 @@ export const GameItem = (props: { game: Game }) => {
   const { game } = props
 
   const [open, setOpen] = useState(false)
+  const [detailOpen, setDetailOpen] = useState(false)
 
   const queryClient = useQueryClient()
   const adminCode = localStorage.getItem('x-party-admin-key')
@@ -21,6 +22,31 @@ export const GameItem = (props: { game: Game }) => {
 
   return (
     <GameItemWrapper>
+      <Modal
+        open={detailOpen}
+        onClose={() => {
+          setDetailOpen(false)
+        }}
+        style={{
+          width: 500,
+        }}
+      >
+        <>
+          <p>1. QR Code</p>
+          <QRCode size={256} value={link} />
+          <p>2. Link</p>
+          <div
+            style={{
+              background: 'rgba(0,0,0,0.06)',
+              padding: '16px 24px',
+              borderRadius: 8,
+            }}
+          >
+            <p>{link}</p>
+          </div>
+        </>
+      </Modal>
+
       <Modal
         open={open}
         onClose={() => {

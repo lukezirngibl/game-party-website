@@ -74,7 +74,7 @@ export const NewGameForm = () => {
             value: 'false',
           },
         ]}
-        value={config.type}
+        value={config.hidden}
         onChange={(hidden) => setConfig((c) => ({ ...c, hidden }))}
       />
       <Select

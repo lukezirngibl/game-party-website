@@ -137,10 +137,32 @@ export const Leaderboard = () => {
               key={team._id}
               style={{
                 height: (window.innerHeight - 96) / party.teams.length,
+                maxHeight: 96,
               }}
             >
-              <GameItem style={columnStyle}>
+              <GameItem
+                style={{
+                  ...columnStyle,
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  justifyContent: 'center',
+                }}
+              >
                 <h2>{team.name}</h2>
+                <h4
+                  style={{
+                    color: 'white',
+                    fontWeight: 'normal',
+                    opacity: 0.7,
+                    marginTop: 4,
+                    fontSize: 14,
+                  }}
+                >
+                  {party.players
+                    .filter((p) => p.teamId === team._id)
+                    .map((p) => p.name.slice(0, 16))
+                    .join(',')}
+                </h4>
               </GameItem>
               {party.games.map((g) => {
                 const val = stats?.[g._id]?.[team._id]
