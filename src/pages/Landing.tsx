@@ -17,7 +17,7 @@ export const Landing = () => {
             navigate('/party/login')
           }}
         />
-        <Button
+        {/* <Button
           label="Join a party"
           style={{
             background: COLORS.Blue,
@@ -25,7 +25,7 @@ export const Landing = () => {
           onClick={() => {
             navigate('/join-with-code')
           }}
-        />
+        /> */}
         <Button
           label="Create a party"
           onClick={() => {

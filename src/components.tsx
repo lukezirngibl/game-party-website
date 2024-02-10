@@ -92,6 +92,7 @@ export const Input = (props: {
       type={props.type}
       style={props.style}
       pattern={props.pattern}
+      maxLength={16}
       value={props.value}
       onChange={(e) => {
         props.onChange(e.target.value)

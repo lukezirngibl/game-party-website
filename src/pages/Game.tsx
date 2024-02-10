@@ -96,7 +96,9 @@ export const Game = () => {
   }
 
   const resultsLocked =
-    data.game.config.maxTries !== undefined && data.results.length >= data.game.config.maxTries
+    data.game.config.maxTries !== undefined &&
+    data.game.config.maxTries !== null &&
+    data.results.length >= data.game.config.maxTries
 
   return (
     <Scaffold backgroundImage="/background-4.png" hideLogo>
