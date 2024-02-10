@@ -167,12 +167,12 @@ export const Game = () => {
                     label={'Submit'}
                     onClick={() => {
                       V1Service.submitResult({ value, time: count })
-                        .then((r) => {
+                        .then((results) => {
                           toast.success('Result submitted')
                           queryClient.setQueryData(['game', gameId], (p: any) => {
                             return {
                               ...p,
-                              results: [...p.results, r],
+                              results,
                             }
                           })
                         })
@@ -217,11 +217,11 @@ export const Game = () => {
                 disabled={data.results.length > 0 || value === ''}
                 onClick={() => {
                   V1Service.submitResult({ value, time: null })
-                    .then((r) => {
+                    .then((results) => {
                       queryClient.setQueryData(['game', gameId], (p: any) => {
                         return {
                           ...p,
-                          results: [...p.results, r],
+                          results,
                         }
                       })
                     })

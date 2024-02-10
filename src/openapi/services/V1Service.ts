@@ -140,7 +140,7 @@ export class V1Service {
             time: number | null;
             value: (string | number);
         },
-    ): CancelablePromise<Result> {
+    ): CancelablePromise<Array<Result>> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/v1/submit-result',

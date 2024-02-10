@@ -53,6 +53,8 @@ export type GameConfig = ({
     maxTries?: number;
 } | {
     hidden: boolean;
+    minScore?: number;
+    maxScore?: number;
     points: number;
     target: number;
     type: GameType_ExactNumber;
