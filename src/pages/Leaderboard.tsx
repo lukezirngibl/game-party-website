@@ -67,7 +67,7 @@ export const Leaderboard = () => {
 
   const windowWidth = window.innerWidth
 
-  const columnWidth = windowWidth / (party.games.length + 4)
+  const columnWidth = windowWidth / (party.games.length + 3)
 
   const columnStyle = {
     flex: `0 0 ${columnWidth}px`,
@@ -99,7 +99,7 @@ export const Leaderboard = () => {
         <GamesHeader>
           <GameItem
             style={{
-              flex: `0 0 ${columnWidth * 3}px`,
+              flex: `0 0 ${columnWidth * 2}px`,
               background: '#35e81a',
             }}
           >
