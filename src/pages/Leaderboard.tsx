@@ -9,10 +9,12 @@ import {
   GameType_Free,
   GameType_HighScore,
   GameType_LowScore,
+  GameType_Record,
   GameType_Timed,
-  V1Service,
+  GameType_TimedWithTarget,
+  PartyService,
 } from '../openapi'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 
 export const Leaderboard = () => {
   const navigate = useNavigate()
@@ -22,7 +24,7 @@ export const Leaderboard = () => {
   const { data: party } = useQuery({
     queryKey: ['admin', adminCode],
     queryFn: () => {
-      return V1Service.getAdminParty()
+      return PartyService.getAdminParty()
     },
     refetchInterval: 1000 * 15,
     onError: () => {
@@ -33,7 +35,7 @@ export const Leaderboard = () => {
   const { data: stats } = useQuery({
     queryKey: ['dashboard', adminCode],
     queryFn: () => {
-      return V1Service.getLeaderboard()
+      return PartyService.getLeaderboard()
     },
     refetchInterval: 1000 * 5,
     onError: () => {
@@ -160,9 +162,17 @@ export const Leaderboard = () => {
                 }}
               >
                 <h2>
-                  {index + 1}. {team.name}
+                  {index + 1}.{' '}
+                  {
+                    party.players
+                      .filter((p) => p.teamId === team._id)
+                      .map((p) => p.name.slice(0, 16))?.[0]
+                  }
                 </h2>
-                <h4
+                {/* <h2>
+                  {index + 1}. {team.name}
+                </h2> */}
+                {/* <h4
                   style={{
                     color: 'white',
                     fontWeight: 'normal',
@@ -175,7 +185,7 @@ export const Leaderboard = () => {
                     .filter((p) => p.teamId === team._id)
                     .map((p) => p.name.slice(0, 16))
                     .join(',')}
-                </h4>
+                </h4> */}
               </GameItem>
               <GameItem
                 style={{
@@ -221,6 +231,10 @@ export const Leaderboard = () => {
                     value = `${val.raw}`
                   } else if (g.config.type === GameType_LowScore.LOW_SCORE) {
                     value = `${val.raw}`
+                  } else if (g.config.type === GameType_Record.RECORD) {
+                    value = `${val.raw}`
+                  } else if (g.config.type === GameType_TimedWithTarget.TIMED_WITH_TARGET) {
+                    value = `${val.raw}`
                   }
                 }
 
@@ -244,7 +258,13 @@ export const Leaderboard = () => {
                           opacity: ['Hidden', 'Correct', 'Incorrect'].includes(`${value}`) ? 0.4 : 1,
                         }}
                       >
-                        {value}
+                        {value === 'Correct'
+                          ? '✔'
+                          : value === 'Incorrect'
+                          ? '✘'
+                          : value === 'Hidden'
+                          ? '●●●'
+                          : value}
                       </h2>
                     </div>
                     <div

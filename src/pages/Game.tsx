@@ -5,19 +5,23 @@ import { toast } from 'react-toastify'
 import { Button, CenterBox, Input, Scaffold, Select } from '../components'
 import { useTimer } from 'react-timer-hook'
 import {
-  GameType,
   GameType_ExactNumber,
   GameType_ExactOption,
   GameType_HighScore,
   GameType_LowScore,
   GameType_Timed,
-  V1Service,
+  GameType_Record,
+  PartyService,
+  GameType_TimedWithTarget,
 } from '../openapi'
 
 export const Game = () => {
   const navigate = useNavigate()
 
   const [value, setValue] = useState<string>('')
+
+  const [wins, setWins] = useState<string>('')
+  const [losses, setLosses] = useState<string>('')
 
   const queryClient = useQueryClient()
 
@@ -34,7 +38,7 @@ export const Game = () => {
     queryKey: ['player', playerId],
     retry: 0,
     queryFn: () => {
-      return V1Service.getPlayer()
+      return PartyService.getPlayer()
     },
     onError: () => {
       navigate('/404')
@@ -45,7 +49,7 @@ export const Game = () => {
     queryKey: ['game', gameId],
     retry: 0,
     queryFn: () => {
-      return V1Service.getGame().then((g) => ({ ...g, results: g.results.reverse() }))
+      return PartyService.getGame().then((g) => ({ ...g, results: g.results.reverse() }))
     },
     onError: () => {
       navigate('/404')
@@ -158,6 +162,17 @@ export const Game = () => {
               {data.results[0].value || `${((data.results[0].time || 0) / 1000).toFixed(2)}s`}
             </p>
           )}
+          <Button
+            label="Back to home"
+            onClick={() => {
+              navigate('/party')
+            }}
+            style={{
+              width: '100%',
+              fontSize: 18,
+              marginTop: 'auto',
+            }}
+          />
         </CenterBox>
       </Scaffold>
     )
@@ -169,12 +184,13 @@ export const Game = () => {
         style={{
           width: '100%',
           maxWidth: 400,
-          height: 500,
+          height: 600,
           alignItems: 'flex-start',
           gap: 8,
         }}
       >
-        <h1 style={{ marginBottom: 'auto' }}>{data.game.title}</h1>
+        <h1>{data.game.title}</h1>
+        <p style={{ marginBottom: 'auto', fontSize: 12, opacity: 0.7 }}>{data.game.description}</p>
 
         {resultsLocked && (
           <p style={{ color: 'red', fontSize: 12, marginTop: 8 }}>
@@ -186,6 +202,41 @@ export const Game = () => {
           <>
             {data.game.config.type === GameType_ExactOption.EXACT_OPTION && (
               <Select options={data.game.config.options} value={value} onChange={setValue} />
+            )}
+            {data.game.config.type === GameType_Record.RECORD && (
+              <div
+                style={{
+                  width: '100%',
+                  flexDirection: 'column',
+                  display: 'flex',
+                  gap: 8,
+                }}
+              >
+                <Input value={wins} onChange={setWins} placeholder="Wins" type="number" pattern="\d*" />
+
+                <Input
+                  value={losses}
+                  onChange={setLosses}
+                  placeholder="Losses"
+                  type="number"
+                  pattern="\d*"
+                />
+              </div>
+            )}
+            {data.game.config.type === GameType_TimedWithTarget.TIMED_WITH_TARGET && (
+              <div
+                style={{
+                  width: '100%',
+                }}
+              >
+                <Input
+                  value={value}
+                  onChange={setValue}
+                  placeholder="Enter..."
+                  type="number"
+                  pattern="[0-9]*\.?[0-9]*"
+                />
+              </div>
             )}
 
             {data.game.config.type === GameType_Timed.TIMED && (
@@ -231,7 +282,7 @@ export const Game = () => {
                     label={'Submit'}
                     onClick={() => {
                       new Promise((resolve) => setTimeout(resolve, 1500)).then(() => {
-                        V1Service.submitResult({ value, time: count })
+                        PartyService.submitResult({ value, time: count })
                           .then((results) => {
                             toast.success('Result submitted')
                             queryClient.setQueryData(['game', gameId], (p: any) => {
@@ -273,7 +324,7 @@ export const Game = () => {
               />
             )}
 
-            {![GameType.TIMED].includes(data.game.config.type as any) && (
+            {![GameType_Timed].includes(data.game.config.type as any) && (
               <Button
                 label={loading ? 'Submitting...' : data.results.length > 0 ? 'Resubmit' : 'Submit'}
                 style={{
@@ -282,9 +333,15 @@ export const Game = () => {
                 }}
                 disabled={loading || resultsLocked}
                 onClick={() => {
+                  let _value = value
+
+                  if (data.game.config.type === GameType_Record.RECORD) {
+                    _value = `${wins || 0}-${losses || 0}`
+                  }
+
                   setLoading(true)
                   new Promise((resolve) => setTimeout(resolve, 1500)).then(() => {
-                    V1Service.submitResult({ value, time: null })
+                    PartyService.submitResult({ value: _value, time: null })
                       .then((results) => {
                         setLoading(false)
                         queryClient.setQueryData(['game', gameId], (p: any) => {
@@ -318,7 +375,7 @@ export const Game = () => {
           }}
         >
           <div style={{}}>
-            <p style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>Team: {player.team.name}</p>
+            <p style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>Solo</p>
             <p style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>Player: {player.me.name}</p>
           </div>
           <div style={{}}>
@@ -334,6 +391,19 @@ export const Game = () => {
             {data.results[0].value || `${((data.results[0].time || 0) / 1000).toFixed(2)}s`}
           </p>
         )}
+        <Button
+          label="Back to home"
+          onClick={() => {
+            navigate('/party')
+          }}
+          style={{
+            width: '100%',
+            backgroundColor: 'rgba(0,0,0,0.05)',
+            color: 'black',
+            fontSize: 18,
+            marginTop: 32,
+          }}
+        />
       </CenterBox>
     </Scaffold>
   )

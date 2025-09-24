@@ -4,16 +4,16 @@ import { toast } from 'react-toastify'
 import styled from 'styled-components'
 import { Button, Input, Select, TextArea } from '../components'
 import {
-  GameType,
   GameType_ExactNumber,
   GameType_ExactOption,
   GameType_Free,
   GameType_HighScore,
   GameType_LowScore,
+  GameType_Record,
   GameType_Timed,
   GameType_TimedWithOption,
   GameType_TimedWithTarget,
-  V1Service,
+  PartyService,
 } from '../openapi'
 
 const options = [
@@ -25,6 +25,7 @@ const options = [
   { label: 'Timed', value: GameType_Timed.TIMED },
   { label: 'Timed with target', value: GameType_TimedWithTarget.TIMED_WITH_TARGET },
   { label: 'Timed with option', value: GameType_TimedWithOption.TIMED_WITH_OPTION },
+  { label: 'Record', value: GameType_Record.RECORD },
 ]
 
 const initialState = {
@@ -39,7 +40,7 @@ const initialState = {
   hidden: 'true',
   minScore: '',
   points: '',
-  type: String(GameType.HIGH_SCORE),
+  type: String(GameType_HighScore),
 }
 
 export const NewGameForm = () => {
@@ -82,7 +83,7 @@ export const NewGameForm = () => {
         value={config.type}
         onChange={(type) => setConfig((c) => ({ ...c, type }))}
       />
-      {[GameType.EXACT_OPTION, GameType.TIMED_WITH_OPTION].includes(config.type as any) && (
+      {[GameType_ExactOption, GameType_TimedWithOption].includes(config.type as any) && (
         <Input
           placeholder="Options (comma separated)"
           value={config.options}
@@ -90,10 +91,10 @@ export const NewGameForm = () => {
         />
       )}
       {[
-        GameType.EXACT_OPTION,
-        GameType.EXACT_NUMBER,
-        GameType.TIMED_WITH_TARGET,
-        GameType.TIMED_WITH_OPTION,
+        GameType_ExactOption,
+        GameType_ExactNumber,
+        GameType_TimedWithTarget,
+        GameType_TimedWithOption,
       ].includes(config.type as any) && (
         <Input
           placeholder="Target value"
@@ -102,7 +103,7 @@ export const NewGameForm = () => {
         />
       )}
 
-      {[GameType.TIMED, GameType.TIMED_WITH_OPTION, GameType.TIMED_WITH_TARGET].includes(
+      {[GameType_Timed, GameType_TimedWithOption, GameType_TimedWithTarget].includes(
         config.type as any,
       ) && (
         <>
@@ -123,7 +124,7 @@ export const NewGameForm = () => {
         </>
       )}
 
-      {[GameType.HIGH_SCORE, GameType.LOW_SCORE, GameType.EXACT_NUMBER].includes(config.type as any) && (
+      {[GameType_HighScore, GameType_LowScore, GameType_ExactNumber].includes(config.type as any) && (
         <>
           <Input
             placeholder="Min Score (optional)"
@@ -161,14 +162,14 @@ export const NewGameForm = () => {
         disabled={!config.title}
         style={{ width: '100%', marginTop: 72 }}
         onClick={() => {
-          V1Service.createGame({
+          PartyService.createGame({
             title: config.title,
             description: config.description,
             config: {
               ...config,
-              type: config.type as GameType,
+              type: config.type as any,
               hidden: config.hidden === 'true',
-            },
+            } as any,
           })
             .then(({ game }) => {
               setConfig(initialState)

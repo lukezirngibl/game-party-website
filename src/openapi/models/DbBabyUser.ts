@@ -3,12 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ObjectId } from './ObjectId';
-export type Result = {
-    time: number | null;
-    value: (string | number);
-    playerId: ObjectId;
-    teamId: ObjectId;
-    gameId: ObjectId;
+export type DbBabyUser = {
+    token?: string;
+    created: number;
+    name: string;
+    archived: boolean;
     _id: ObjectId;
 };
 

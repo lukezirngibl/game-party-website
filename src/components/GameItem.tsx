@@ -7,9 +7,9 @@ import QRCode from 'react-qr-code'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
 import { Modal } from '../components'
-import { Game, V1Service } from '../openapi'
+import { DbGame, Game, PartyService } from '../openapi'
 
-export const GameItem = (props: { game: Game }) => {
+export const GameItem = (props: { game: DbGame }) => {
   const { game } = props
 
   const [open, setOpen] = useState(false)
@@ -98,7 +98,7 @@ export const GameItem = (props: { game: Game }) => {
             boxShadow: '0 1px 2px 2px rgba(0, 0, 0, 0.1)',
           }}
           onClick={() => {
-            V1Service.archiveGame(game._id)
+            PartyService.archiveGame(game._id)
               .then(() => {
                 queryClient.setQueryData(['admin', adminCode], (p: any) => {
                   return {

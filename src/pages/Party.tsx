@@ -1,11 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, CenterBox, Scaffold } from '../components'
-import { V1Service } from '../openapi'
-import { IoCheckmarkCircle } from 'react-icons/io5'
+import { Button } from '../components'
+import { PartyService } from '../openapi'
 // @ts-ignore
-import Camera from 'react-html5-camera-photo'
 import 'react-html5-camera-photo/build/css/index.css'
 
 export const Party = () => {
@@ -19,7 +17,7 @@ export const Party = () => {
     queryKey: ['player', playerId],
     retry: 0,
     queryFn: () => {
-      return V1Service.getPlayer()
+      return PartyService.getPlayer()
     },
     onError: () => {
       localStorage.clear()
@@ -31,59 +29,94 @@ export const Party = () => {
     return null
   }
 
+  console.log(data)
+
   return (
-    <Scaffold backgroundImage="/background-4.png" hideLogo>
-      <CenterBox
+    <div
+      style={{
+        borderRadius: 8,
+        background: 'white',
+        boxShadow: '0 0 8px 8px rgba(0, 0, 0, 0.1)',
+        padding: '32px',
+        height: '100vh',
+        overflowY: 'scroll',
+        paddingBottom: 64,
+      }}
+    >
+      {/* <h1>{data.team.name}</h1> */}
+      {/* <div
         style={{
+          display: 'flex',
+          gap: 16,
+          alignItems: 'center',
+          justifyContent: 'flex-start',
           width: '100%',
-          maxWidth: 400,
-          height: 400,
-          gap: 8,
+          textAlign: 'left',
         }}
       >
-        {/* <h1>{data.team.name}</h1> */}
-        <div
+        <IoCheckmarkCircle color={'#00e00f'} size={32} />
+        <p
           style={{
-            display: 'flex',
-            gap: 16,
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            width: '100%',
+            fontSize: 18,
+
             textAlign: 'left',
+            width: '100%',
+            fontWeight: 'bold',
           }}
         >
-          <IoCheckmarkCircle color={'#00e00f'} size={32} />
+          Team: {data.team.name}
+        </p>
+      </div> */}
+
+      <p
+        style={{
+          textAlign: 'left',
+          width: '100%',
+          fontSize: 16,
+          marginTop: 24,
+          marginBottom: 24,
+          opacity: 0.7,
+        }}
+      >
+        Hey {data.me.name}, you are all set! Now you can start playing the games below.
+      </p>
+
+      {data.games.map((g) => (
+        <div
+          style={{ display: 'flex', alignItems: 'center', gap: 16, width: '100%', marginBottom: 16 }}
+          key={g._id}
+        >
           <p
             style={{
-              fontSize: 18,
-
-              textAlign: 'left',
-              width: '100%',
+              flex: 1,
+              fontSize: 16,
               fontWeight: 'bold',
             }}
           >
-            Team: {data.team.name}
+            {g.title}
           </p>
+          <Button
+            style={{
+              height: 40,
+              width: 64,
+              padding: 0,
+              fontSize: 16,
+            }}
+            label="Play"
+            onClick={() => {
+              navigate(`/proxy/game?gameId=${g._id}`)
+            }}
+          />
         </div>
-
-        <p
-          style={{
-            textAlign: 'left',
-            width: '100%',
-            fontSize: 18,
-            marginTop: 24,
-          }}
-        >
-          Hey {data.me.name}, you are all set! Now go scan the game QR codes with your camera to play.
-        </p>
-        {/* <Button
+      ))}
+      {/* <Button
           label="Scan QR code"
           style={{
             width: '100%',
             marginTop: 'auto',
           }}
         /> */}
-        {/* <Button
+      {/* <Button
           label="Leave team"
           onClick={() => {
             localStorage.clear()
@@ -95,7 +128,7 @@ export const Party = () => {
             color: 'rgba(0,0,0,0.7)',
           }}
         /> */}
-        {/* <Button
+      {/* <Button
           label="Close Window"
           onClick={() => {
             setCameraEnabled(true)
@@ -106,22 +139,21 @@ export const Party = () => {
             marginTop: 'auto',
           }}
         /> */}
-        <Button
-          label="Leave party"
-          onClick={() => {
-            localStorage.clear()
-            navigate('/')
-          }}
-          style={{
-            width: '100%',
-            background: 'transparent',
-            textDecoration: 'underline',
-            fontSize: 18,
-            color: 'rgba(0,0,0,0.7)',
-            marginTop: 'auto',
-          }}
-        />
-      </CenterBox>
-    </Scaffold>
+      <Button
+        label="Leave"
+        onClick={() => {
+          localStorage.clear()
+          navigate('/')
+        }}
+        style={{
+          width: '100%',
+          background: 'transparent',
+          fontSize: 20,
+          color: 'black',
+          marginTop: 24,
+          backgroundColor: 'rgba(0,0,0,0.1)',
+        }}
+      />
+    </div>
   )
 }

@@ -11,7 +11,7 @@ import { Button, Modal, Scaffold } from '../components'
 import { GameItem } from '../components/GameItem'
 import { NewGameForm } from '../components/NewGameForm'
 import { COLORS } from '../constants'
-import { V1Service } from '../openapi'
+import { PartyService } from '../openapi'
 
 export const PartyAdmin = () => {
   const navigate = useNavigate()
@@ -27,9 +27,9 @@ export const PartyAdmin = () => {
   const { data: party } = useQuery({
     queryKey: ['admin', adminCode],
     queryFn: () => {
-      return V1Service.getAdminParty()
+      return PartyService.getAdminParty()
     },
-    refetchInterval: 1000 * 5,
+    // refetchInterval: 1000 * 5,
     enabled: !!adminCode,
     retry: false,
     onError: () => {
@@ -196,7 +196,7 @@ export const PartyAdmin = () => {
                     boxShadow: '0 1px 2px 2px rgba(0, 0, 0, 0.1)',
                   }}
                   onClick={() => {
-                    V1Service.archiveTeam(team._id)
+                    PartyService.archiveTeam(team._id)
                       .then(() => {
                         queryClient.setQueryData(['admin', adminCode], (p: any) => {
                           return {

@@ -2,17 +2,16 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreateGameConfig } from '../models/CreateGameConfig';
-import type { Game } from '../models/Game';
-import type { Party } from '../models/Party';
+import type { DbGame } from '../models/DbGame';
+import type { DbParty } from '../models/DbParty';
+import type { DbPlayer } from '../models/DbPlayer';
+import type { DbResult } from '../models/DbResult';
+import type { DbTeam } from '../models/DbTeam';
 import type { PartyStats } from '../models/PartyStats';
-import type { Player } from '../models/Player';
-import type { Result } from '../models/Result';
-import type { Team } from '../models/Team';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-export class V1Service {
+export class PartyService {
     /**
      * @param requestBody
      * @returns any Ok
@@ -23,11 +22,11 @@ export class V1Service {
             name: string;
         },
     ): CancelablePromise<{
-        party: Party;
+        party: DbParty;
     }> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/v1/create-party',
+            url: '/party/create-party',
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -40,12 +39,12 @@ export class V1Service {
     public static getParty(
         joinCode: string,
     ): CancelablePromise<{
-        teams: Array<Team>;
-        party: Party;
+        teams: Array<DbTeam>;
+        party: DbParty;
     }> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/v1/party',
+            url: '/party/party',
             query: {
                 'joinCode': joinCode,
             },
@@ -62,11 +61,11 @@ export class V1Service {
             teamId: string;
         },
     ): CancelablePromise<{
-        player: Player;
+        player: DbPlayer;
     }> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/v1/join-team',
+            url: '/party/join-team',
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -82,12 +81,12 @@ export class V1Service {
             name: string;
         },
     ): CancelablePromise<{
-        team: Team;
-        player: Player;
+        team: DbTeam;
+        player: DbPlayer;
     }> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/v1/create-team',
+            url: '/party/create-team',
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -97,14 +96,15 @@ export class V1Service {
      * @throws ApiError
      */
     public static getPlayer(): CancelablePromise<{
-        party: Party;
-        team: Team;
-        players: Array<Player>;
-        me: Player;
+        games: Array<DbGame>;
+        party: DbParty;
+        team: DbTeam;
+        players: Array<DbPlayer>;
+        me: DbPlayer;
     }> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/v1/player',
+            url: '/party/player',
         });
     }
     /**
@@ -114,7 +114,7 @@ export class V1Service {
     public static leaveTeam(): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/v1/leave-team',
+            url: '/party/leave-team',
         });
     }
     /**
@@ -122,17 +122,17 @@ export class V1Service {
      * @throws ApiError
      */
     public static getGame(): CancelablePromise<{
-        results: Array<Result>;
-        game: Game;
+        results: Array<DbResult>;
+        game: DbGame;
     }> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/v1/game',
+            url: '/party/game',
         });
     }
     /**
      * @param requestBody
-     * @returns Result Ok
+     * @returns DbResult Ok
      * @throws ApiError
      */
     public static submitResult(
@@ -140,10 +140,10 @@ export class V1Service {
             time: number | null;
             value: (string | number);
         },
-    ): CancelablePromise<Array<Result>> {
+    ): CancelablePromise<Array<DbResult>> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/v1/submit-result',
+            url: '/party/submit-result',
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -153,14 +153,15 @@ export class V1Service {
      * @throws ApiError
      */
     public static getAdminParty(): CancelablePromise<{
-        players: Array<Player>;
-        games: Array<Game>;
-        teams: Array<Team>;
-        party: Party;
+        results: Array<DbResult>;
+        players: Array<DbPlayer>;
+        games: Array<DbGame>;
+        teams: Array<DbTeam>;
+        party: DbParty;
     }> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/v1/party/admin',
+            url: '/party/party/admin',
         });
     }
     /**
@@ -170,7 +171,7 @@ export class V1Service {
     public static getLeaderboard(): CancelablePromise<PartyStats> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/v1/leaderboard',
+            url: '/party/leaderboard',
         });
     }
     /**
@@ -183,7 +184,7 @@ export class V1Service {
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/v1/{teamId}/archive-team',
+            url: '/party/{teamId}/archive-team',
             path: {
                 'teamId': teamId,
             },
@@ -199,7 +200,7 @@ export class V1Service {
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/v1/{gameId}/archive-game',
+            url: '/party/{gameId}/archive-game',
             path: {
                 'gameId': gameId,
             },
@@ -212,16 +213,16 @@ export class V1Service {
      */
     public static createGame(
         requestBody: {
-            config: CreateGameConfig;
+            config: any;
             description: string;
             title: string;
         },
     ): CancelablePromise<{
-        game: Game;
+        game: DbGame;
     }> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/v1/create-game',
+            url: '/party/create-game',
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -236,7 +237,7 @@ export class V1Service {
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/v1/{partyId}/archive-party',
+            url: '/party/{partyId}/archive-party',
             path: {
                 'partyId': partyId,
             },

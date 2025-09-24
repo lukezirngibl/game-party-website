@@ -3,11 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ObjectId } from './ObjectId';
-export type Party = {
-    active: boolean;
-    joinCode: string;
-    adminCode: string;
-    name: string;
+export type DbPostLike = {
+    created: number;
+    postId: ObjectId;
+    friendId: ObjectId;
     _id: ObjectId;
 };
 

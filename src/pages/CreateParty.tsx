@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button, Scaffold } from '../components'
 import styled from 'styled-components'
 import { useState } from 'react'
-import { V1Service } from '../openapi'
+import { PartyService } from '../openapi'
 
 export const CreateParty = () => {
   const navigate = useNavigate()
@@ -23,7 +23,7 @@ export const CreateParty = () => {
             label="Create a party"
             disabled={name.length < 5}
             onClick={() => {
-              V1Service.createParty({ name }).then(({ party }) => {
+              PartyService.createParty({ name }).then(({ party }) => {
                 localStorage.setItem('x-party-admin-key', party.adminCode)
                 navigate(`/party/admin`)
               })

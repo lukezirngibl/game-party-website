@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, CenterBox, Input, Scaffold, Select } from '../components'
 import { COLORS } from '../constants'
-import { V1Service } from '../openapi'
+import { PartyService } from '../openapi'
 
 export const JoinTeam = () => {
   const navigate = useNavigate()
@@ -25,7 +25,7 @@ export const JoinTeam = () => {
     queryKey: ['party', joinCode],
     queryFn: () => {
       localStorage.setItem('x-party-code', joinCode!)
-      return V1Service.getParty(joinCode!)
+      return PartyService.getParty(joinCode!)
     },
     enabled: !!joinCode,
   })
@@ -56,7 +56,7 @@ export const JoinTeam = () => {
           gap: 8,
         }}
       >
-        {tab === null && (
+        {/* {tab === null && (
           <>
             <h1>{party.party.name}</h1>
             <Button
@@ -74,78 +74,76 @@ export const JoinTeam = () => {
               }}
             />
           </>
-        )}
-        {tab === 'join' && (
-          <>
-            <h1>{party.party.name}</h1>
-            <Select
-              style={{
-                marginTop: 'auto',
-              }}
-              onChange={setTeam}
-              options={party.teams.map((team) => ({
-                label: team.name,
-                value: team._id,
-              }))}
-              value={team}
-            />
-            <Input style={{}} placeholder="My name" onChange={setName} value={name} />
-            <Button
-              label="Join"
-              disabled={loading || !team || name.length < 3}
-              style={{ marginTop: 16, width: '100%', background: COLORS.Blue }}
-              onClick={() => {
-                setLoading(true)
-                V1Service.joinTeam({ name, teamId: team })
-                  .then(({ player }) => {
-                    setLoading(false)
-                    localStorage.setItem('x-player-id', player._id)
-                    new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-                      navigate('/party')
-                    })
+        )} */}
+
+        {/* <>
+          <h1>{party.party.name}</h1>
+          <Select
+            style={{
+              marginTop: 'auto',
+            }}
+            onChange={setTeam}
+            options={party.teams.map((team) => ({
+              label: team.name,
+              value: team._id,
+            }))}
+            value={team}
+          />
+          <Input style={{}} placeholder="My name" onChange={setName} value={name} />
+          <Button
+            label="Join"
+            disabled={loading || !team || name.length < 3}
+            style={{ marginTop: 16, width: '100%', background: COLORS.Blue }}
+            onClick={() => {
+              setLoading(true)
+              PartyService.joinTeam({ name, teamId: team })
+                .then(({ player }) => {
+                  setLoading(false)
+                  localStorage.setItem('x-player-id', player._id)
+                  new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+                    navigate('/party')
                   })
-                  .catch((e) => {
-                    setLoading(false)
-                    alert(e.message)
+                })
+                .catch((e) => {
+                  setLoading(false)
+                  alert(e.message)
+                })
+            }}
+          />
+        </> */}
+
+        <>
+          <h1>{party.party.name}</h1>
+          <Input
+            style={{
+              marginTop: 'auto',
+            }}
+            placeholder="My name"
+            onChange={setName}
+            value={name}
+          />
+          {/* <Input style={{}} placeholder="Team name" onChange={setTeamName} value={teamName} /> */}
+          <Button
+            label="Create"
+            disabled={loading || name.length < 3}
+            style={{ marginTop: 16, width: '100%', background: COLORS.Blue }}
+            onClick={() => {
+              setLoading(true)
+              PartyService.createTeam({ name, teamName })
+                .then(({ team, player }) => {
+                  setLoading(false)
+                  localStorage.setItem('x-player-id', player._id)
+                  new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+                    navigate('/party')
                   })
-              }}
-            />
-          </>
-        )}
-        {tab === 'new' && (
-          <>
-            <h1>{party.party.name}</h1>
-            <Input
-              style={{
-                marginTop: 'auto',
-              }}
-              placeholder="My name"
-              onChange={setName}
-              value={name}
-            />
-            <Input style={{}} placeholder="Team name" onChange={setTeamName} value={teamName} />
-            <Button
-              label="Create"
-              disabled={loading || name.length < 3 || teamName.length < 3}
-              style={{ marginTop: 16, width: '100%', background: COLORS.Blue }}
-              onClick={() => {
-                setLoading(true)
-                V1Service.createTeam({ name, teamName })
-                  .then(({ team, player }) => {
-                    setLoading(false)
-                    localStorage.setItem('x-player-id', player._id)
-                    new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-                      navigate('/party')
-                    })
-                  })
-                  .catch((e) => {
-                    setLoading(false)
-                    alert(e.message)
-                  })
-              }}
-            />
-          </>
-        )}
+                })
+                .catch((e) => {
+                  setLoading(false)
+                  alert(e.message)
+                })
+            }}
+          />
+        </>
       </CenterBox>
     </Scaffold>
   )

@@ -20,14 +20,16 @@ export const Button = (props: {
         ...(props.style || {}),
       }}
     >
-      {props.label}
+      <p>{props.label}</p>
     </_Button>
   )
 }
 
 const _Button = styled.button`
   text-align: center;
-  line-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 64px;
   font-size: 24px;
   font-weight: 600;
@@ -55,12 +57,13 @@ export const Scaffold = (props: {
   children: ReactNode
   backgroundImage: string
   hideLogo?: boolean
+  style?: CSSProperties
   hideBackground?: boolean
 }) => {
   const navigate = useNavigate()
 
   return (
-    <div style={{ width: '100vw', height: '100%', overflow: 'hidden' }}>
+    <div style={{ width: '100vw', height: '100%', overflow: 'hidden', ...(props.style || {}) }}>
       {!props.hideLogo && (
         <img
           src="/logo.svg"

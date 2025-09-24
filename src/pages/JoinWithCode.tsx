@@ -1,8 +1,7 @@
-import { useNavigate } from 'react-router-dom'
-import { Button, Scaffold } from '../components'
-import styled from 'styled-components'
 import { useState } from 'react'
-import { V1Service } from '../openapi'
+import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
+import { Button, Scaffold } from '../components'
 
 export const JoinWithCode = () => {
   const navigate = useNavigate()

@@ -2,14 +2,13 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { GameConfig } from './GameConfig';
 import type { ObjectId } from './ObjectId';
 export type Game = {
-    config: GameConfig;
-    active: boolean;
-    description: string;
-    title: string;
-    partyId: ObjectId;
+    locked: boolean;
+    completed?: boolean;
+    userId: ObjectId;
+    gameCode: string;
+    createdAt: string;
     _id: ObjectId;
 };
 

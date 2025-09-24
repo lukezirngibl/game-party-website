@@ -4,9 +4,11 @@
 /* eslint-disable */
 import type { ObjectId } from './ObjectId';
 export type Player = {
-    active: boolean;
+    userId: ObjectId;
     name: string;
-    teamId: ObjectId;
+    isAi: boolean;
+    gameId: ObjectId;
+    createdAt: string;
     _id: ObjectId;
 };
 

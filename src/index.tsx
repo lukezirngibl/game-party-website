@@ -20,7 +20,7 @@ import { JoinWithCode } from './pages/JoinWithCode'
 
 const queryClient = new QueryClient()
 
-OpenAPI.BASE = process.env.REACT_APP_API_URL || 'empty'
+OpenAPI.BASE = `${process.env.REACT_APP_API_URL}/api/v1`
 
 const getHeaders = async () => {
   const gameId = localStorage.getItem('x-game-id')
@@ -39,6 +39,7 @@ const getHeaders = async () => {
 }
 
 OpenAPI.HEADERS = getHeaders
+
 const router = createBrowserRouter([
   {
     path: '/404',
