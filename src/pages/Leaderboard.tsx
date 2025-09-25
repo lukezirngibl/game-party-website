@@ -232,7 +232,12 @@ export const Leaderboard = () => {
                   } else if (g.config.type === GameType_LowScore.LOW_SCORE) {
                     value = `${val.raw}`
                   } else if (g.config.type === GameType_Record.RECORD) {
-                    value = `${val.raw}`
+                    if (val.raw) {
+                      const s = `${val.raw}`.split('-')
+                      value = `${s[1]}W - ${s[0]}L`
+                    } else {
+                      value = ''
+                    }
                   } else if (g.config.type === GameType_TimedWithTarget.TIMED_WITH_TARGET) {
                     value = `${val.raw}`
                   }
