@@ -14,7 +14,7 @@ import {
   GameType_TimedWithTarget,
   PartyService,
 } from '../openapi'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 export const Leaderboard = () => {
   const navigate = useNavigate()
@@ -43,13 +43,13 @@ export const Leaderboard = () => {
     },
   })
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     window.location.reload()
-  //   }, 1000 * 60)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      window.location.reload()
+    }, 1000 * 60)
 
-  //   return () => clearInterval(interval)
-  // }, [])
+    return () => clearInterval(interval)
+  }, [])
 
   const teamTotals = useMemo(
     () =>
