@@ -234,7 +234,7 @@ export const Leaderboard = () => {
                   } else if (g.config.type === GameType_Record.RECORD) {
                     if (val.raw) {
                       const s = `${val.raw}`.split('-')
-                      value = `${s[1]}W - ${s[0]}L`
+                      value = `${s[0]}W - ${s[1]}L`
                     } else {
                       value = ''
                     }
